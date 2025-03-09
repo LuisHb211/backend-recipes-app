@@ -31,7 +31,9 @@ class RecipeManager(models.Manager):
                 F('author__last_name'), Value(' ('),
                 F('author__username'), Value(')'),
             )
-        ).order_by('-id')
+            
+        #Using select_related helps to reduce the number of database queries by fetching related objects in a single query
+        ).order_by('-id').select_related('category', 'author').prefetch_related('tags')
 
 
 class Recipe(models.Model):
